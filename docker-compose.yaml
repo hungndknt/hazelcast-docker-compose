@@ -1,0 +1,24 @@
+version: '3'
+services:
+  hazelcast:
+    image: hazelcast/hazelcast:5.3.8
+    network_mode: "host"
+    #ports:
+    #  - "5701:5701"
+    environment:
+      - JAVA_OPTS=-Dhazelcast.config=/opt/hazelcast/config/hazelcast.xml -Dhazelcast.data.dir=/tmp/
+    volumes:
+      - ./config:/opt/hazelcast/config
+      - ./hazelcast-data:/tmp
+
+  management-center:
+    image: hazelcast/management-center:5.7.1
+    #ports:
+    #  - "18080:8080"
+    network_mode: "host"
+    environment:
+      - JAVA_OPTS=-Dhazelcast.mc.healthCheck.enable=true
+      - MC_ADMIN_USER=hzapp
+      - MC_ADMIN_PASSWORD="your-password"
+    volumes:
+      - ./mc-data:/data
